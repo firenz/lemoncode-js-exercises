@@ -30,12 +30,8 @@ class SlotMachine {
       return Math.random() >= 0.5;
     };
 
-    const slot1 = randomBoolean();
-    const slot2 = randomBoolean();
-    const slot3 = randomBoolean();
-
     let result = "";
-    if(slot1 === slot2 && slot2 === slot3) {
+    if(randomBoolean() && randomBoolean() && randomBoolean()) {
       result = `Congratulations!!!. You won ${this.collectedCoins} coins!!`;
       this.collectedCoins = 0;
     }
