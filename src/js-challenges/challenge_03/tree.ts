@@ -6,14 +6,8 @@
 
 interface TreeNode<T> {
   value: T;
-  parent?: TreeNode<T>;
+  parent: TreeNode<T>;
   children?: TreeNode<T>[];
-  
-  getParent(): TreeNode<T>;
-
-  addChild(value: T): void;
-  removeChild(child: TreeNode<T>): void;
-  getChildren(): TreeNode<T>[];
 }
 
 interface Tree<T> {
@@ -21,6 +15,12 @@ interface Tree<T> {
   nodes: TreeNode<T>[];
 
   getRoot(): TreeNode<T>;
+  
+  getParent(node: TreeNode<T>): TreeNode<T>;
+  getChildren(node: TreeNode<T>): TreeNode<T>[];
+  
+  addChild(node: TreeNode<T>, value: T): void;
+  removeChild(node: TreeNode<T>, child: TreeNode<T>): void;
   
   getNodesByValue(value: T): TreeNode<T>[];
   getNodeByValue(value: T): TreeNode<T>;
