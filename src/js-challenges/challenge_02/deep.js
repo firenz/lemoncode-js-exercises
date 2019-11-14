@@ -24,7 +24,7 @@ const deepGet = (object, ...propertyKeysPath) => {
   }, object);
 };
 
-console.log(`## Challenge 02 - Part A - DEEP GET ##
+console.log(`## Challenge 02_A - DEEP GET ##
 Original object: ${JSON.stringify(myObject1)}
 Property x: ${JSON.stringify(deepGet(myObject1, "x"))}
 Property a: ${JSON.stringify(deepGet(myObject1, "a"))}
@@ -55,7 +55,7 @@ const deepSet = (propertyValue, object, ...propertyKeysPath) => {
 
 const myObject2 = {};
 
-console.log(`## Challenge 02 - Part B - DEEP SET ##
+console.log(`## Challenge 02_B - DEEP SET ##
 Original object: ${JSON.stringify(myObject2)}
 Set value 1 in b in a: ${JSON.stringify(deepSet(1, myObject2, "a", "b"))}
 Set value 2 in c in a: ${JSON.stringify(deepSet(2, myObject2, "a", "c"))}
