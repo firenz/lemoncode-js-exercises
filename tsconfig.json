@@ -1,15 +1,14 @@
 {
-  "compileOnSave": true,
   "compilerOptions": {
+    "target": "es6",
     "module": "commonjs",
     "noImplicitAny": true,
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": true,
-    "target": "es6"
+    "outDir": "./src/transpiled/"
   },
-  "files": [
-    "./src/js-exercises/exercise_04/read-book.ts",
-    "./src/js-challenges/challenge_03/tree.ts"
-  ]
+  "compileOnSave": true,
+  "exclude": ["node_modules"],
+  "include": ["src/**/*.ts"],
 }

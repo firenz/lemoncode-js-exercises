@@ -20,7 +20,7 @@
     "url": "git+https://github.com/Firenz/lemoncode-js-exercises.git"
   },
   "scripts": {
-    "start": "lite-server -c bs-config.json"
+    "start": "tsc && lite-server -c bs-config.json"
   },
   "dependencies": {
     "lite-server": "^2.4.0"
