@@ -32,7 +32,7 @@ class SlotMachine {
 
     let result = "";
     if(randomBoolean() && randomBoolean() && randomBoolean()) {
-      result = `Congratulations!!!. You won ${this.collectedCoins} coins!!`;
+      result = `Congratulations!!!. You won ${this.collectedCoins} coin${(this.collectedCoins > 1) ? "s" : ""}!!`;
       this.collectedCoins = 0;
     }
     else {
