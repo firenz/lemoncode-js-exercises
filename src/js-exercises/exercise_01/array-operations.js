@@ -17,7 +17,7 @@ Original array: ${array} -- Result: ${head(array)}`);
 // Implementa una función tail (inmutable), tal que, dado un array como 
 // entrada devuelta todos menos el primer elemento. Utiliza rest operator.
 
-const tail = ([head, ...tail]) => { return tail;}; // Implementation here.
+const tail = ([, ...tail]) => { return tail;}; // Implementation here.
 
 console.log(`## Exercise 01_02 - TAIL ## 
 Original array: ${array} -- Result: ${tail(array)}`);
