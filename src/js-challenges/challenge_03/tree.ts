@@ -6,7 +6,7 @@
 
 interface TreeNode<T> {
   value: T;
-  parent: TreeNode<T>;
+  parent?: TreeNode<T>;
   children?: Array<TreeNode<T>>;
 }
 
