@@ -7,28 +7,6 @@
 interface TreeNode<T> {
   value: T;
   parent: TreeNode<T>;
-  children?: TreeNode<T>[];
-}
-
-interface Tree<T> {
-  root: TreeNode<T>;
-  nodes: TreeNode<T>[];
-
-  getRoot(): TreeNode<T>;
-  
-  getParent(node: TreeNode<T>): TreeNode<T>;
-  getChildren(node: TreeNode<T>): TreeNode<T>[];
-  
-  addChild(node: TreeNode<T>, value: T): void;
-  removeChild(node: TreeNode<T>, child: TreeNode<T>): void;
-  
-  getNodesByValue(value: T): TreeNode<T>[];
-  getNodeByValue(value: T): TreeNode<T>;
-  getValueFromNode(node: TreeNode<T>): T;
-
-  addNode(node: TreeNode<T>): void;
-  removeNode(node: TreeNode<T>): void;
-
-  printTree(): void;
+  children?: Array<TreeNode<T>>;
 }
 
