@@ -12,11 +12,11 @@ const expensiveFunction = () => {
 // argumentos y tampoco devuelven valores null o undefined.
 
 type PrimitiveType = number | string | boolean;
-type NonNullableType = NonNullable< PrimitiveType | object >;
-type NoArgumentsFunctionType = () => NonNullableType;
+type NonNullablePrimitiveType = NonNullable< PrimitiveType | object >;
+type NoArgumentsFunctionType = () => NonNullablePrimitiveType;
 
 const memoize = (fn: NoArgumentsFunctionType): NoArgumentsFunctionType => { 
-  let cache: NonNullableType;
+  let cache: NonNullablePrimitiveType;
   return () => {
     if(cache) return cache;
 
@@ -64,13 +64,11 @@ const repeatText = (repetitions: number, text: string): string =>
 type ArgumentsFunctionType = (...args: PrimitiveType[]) => PrimitiveType
 
 const memoizeArgs = (fn: ArgumentsFunctionType): any => { 
-  let cache: object = {};
+  const cache:{ [key: string]: PrimitiveType }  = {};
 
   return (...args: PrimitiveType[]) => {
-    let keys: any = args;
-
-    if(keys in cache) return cache[keys];
-    return cache[keys] = fn(...args);
+    const key: string = JSON.stringify(args);
+    return cache[key] || (cache[key] = fn(...args));
   }
 };
 
