@@ -15,10 +15,10 @@ interface BookSettings{
   isRead: boolean;
 };
 
-function isBookReadTS(books: BookSettings[] = [], titleToSearch: string = ""): boolean {
+function isBookRead(books: BookSettings[] = [], titleToSearch: string = ""): boolean {
   // Implementation here
   let book: BookSettings = books.find(x => x.title === titleToSearch);
-  return (book === null) ? false : book.isRead;
+  return (book === undefined) ? false : book.isRead;
 }
 
 const books = [
@@ -28,6 +28,6 @@ const books = [
 ];
 
 console.log(`## Exercise 04 - READ BOOKS -- TS Version ## 
-"Devastación" is read?: ${isBookReadTS(books, "Devastación")}
-"Canción de hielo y fuego" is read?: ${isBookReadTS(books,"Canción de hielo y fuego")}
-"Los Pilares de la Tierra" is read?: ${isBookReadTS(books, "Los Pilares de la Tierra")}`);
+"Devastación" is read?: ${isBookRead(books, "Devastación")}
+"Canción de hielo y fuego" is read?: ${isBookRead(books,"Canción de hielo y fuego")}
+"Los Pilares de la Tierra" is read?: ${isBookRead(books, "Los Pilares de la Tierra")}`);

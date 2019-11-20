@@ -1,7 +1,7 @@
 ;
-function isBookReadTS(books = [], titleToSearch = "") {
+function isBookRead(books = [], titleToSearch = "") {
     let book = books.find(x => x.title === titleToSearch);
-    return (book === null) ? false : book.isRead;
+    return (book === undefined) ? false : book.isRead;
 }
 const books = [
     { title: "Harry Potter y la piedra filosofal", isRead: true },
@@ -9,7 +9,7 @@ const books = [
     { title: "Devastación", isRead: true },
 ];
 console.log(`## Exercise 04 - READ BOOKS -- TS Version ## 
-"Devastación" is read?: ${isBookReadTS(books, "Devastación")}
-"Canción de hielo y fuego" is read?: ${isBookReadTS(books, "Canción de hielo y fuego")}
-"Los Pilares de la Tierra" is read?: ${isBookReadTS(books, "Los Pilares de la Tierra")}`);
+"Devastación" is read?: ${isBookRead(books, "Devastación")}
+"Canción de hielo y fuego" is read?: ${isBookRead(books, "Canción de hielo y fuego")}
+"Los Pilares de la Tierra" is read?: ${isBookRead(books, "Los Pilares de la Tierra")}`);
 //# sourceMappingURL=read-book.js.map
