@@ -6,7 +6,8 @@
     "lemoncode",
     "master",
     "javascript",
-    "typescript"
+    "typescript",
+    "exercises"
   ],
   "homepage": "https://github.com/Firenz/lemoncode-js-exercises#readme",
   "bugs": {
@@ -20,11 +21,14 @@
     "url": "git+https://github.com/Firenz/lemoncode-js-exercises.git"
   },
   "scripts": {
-    "start": "tsc && lite-server -c bs-config.json"
+    "start": "rimraf transpiled && tsc && lite-server -c bs-config.json"
   },
   "dependencies": {
     "lite-server": "^2.4.0"
   },
   "peerDependencies": {},
-  "devDependencies": {}
+  "devDependencies": {
+    "rimraf": "^3.0.0",
+    "typescript": "^3.7.2"
+  }
 }
