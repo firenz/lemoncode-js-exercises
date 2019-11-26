@@ -21,14 +21,18 @@
     "url": "git+https://github.com/Firenz/lemoncode-js-exercises.git"
   },
   "scripts": {
-    "start": "rimraf transpiled && tsc && lite-server -c bs-config.json"
+    "start": "tsc --noEmit && rimraf dist && parcel ./src/index.html --open",
+    "build": "tsc --noEmit && rimraf dist && parcel ./src/index.html"
   },
   "dependencies": {
-    "lite-server": "^2.4.0"
+    "lodash.curry": "^4.1.1",
+    "regenerator-runtime": "^0.13.3"
   },
-  "peerDependencies": {},
   "devDependencies": {
+    "@types/node": "^12.12.14",
+    "parcel-bundler": "^1.12.4",
     "rimraf": "^3.0.0",
+    "sass": "^1.23.7",
     "typescript": "^3.7.2"
   }
 }

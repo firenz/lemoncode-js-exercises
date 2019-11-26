@@ -20,6 +20,7 @@ function merge(source, target) {
   // Implementation here.
   return { ...clone(target), ...clone(source) };
 }
+
 {
   const a = { name: "Maria", surname: "Ibañez", country: "SPA" };
   const b = { name: "Luisa", age: 31, married: true };

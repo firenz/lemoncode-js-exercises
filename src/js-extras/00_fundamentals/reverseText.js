@@ -1,0 +1,23 @@
+// --- CHALLENGE ------------------------------------------------------------------------
+
+// Dado un texto cualquiera, invierte el orden de las palabras.
+// TIP: Se hace en 1 sola línea.
+
+// Ejemplo: "Uno dos tres" --> "tres dos Uno"
+
+// TIP: Consulta la documentación en MDN sobre los strings, verás que incorporan muchas
+// funciones de utilidad para el manejo y manipulación de strings.
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/prototype
+
+function reverseText(text) {
+  // Implementation here.
+  return text.split(' ').reverse().join(' ');
+};
+
+const exampleText = "Uno dos tres";
+// console.log(exampleText);
+// console.log(reverseText(exampleText));
+
+console.log(`## EXTRAS - FUNDAMENTALS - Reverse text ##
+Example text: ${exampleText}}
+Reversed text: ${reverseText(exampleText)}`);
