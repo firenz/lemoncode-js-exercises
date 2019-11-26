@@ -1,62 +1,63 @@
-html, body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100%;
-  width: 100%;
-  font-family: Roboto;
+:root {
+  --base-background: indianred;
+  --main-font-color: teal;
+  --main-background: white;
+}
+
+body {
+  background-color: var(--base-background);
+  font-family: Arial, Helvetica, sans-serif;
   margin: 0;
-  background-color: #d9d9d9;
-}
-
-.header {
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 2rem;
-  color: white;
-  background: linear-gradient(-25deg, #136a8a, #4ec1b7);
-  font-family: "Open Sans";
+  justify-content: space-between;
+  align-items: stretch;
 }
 
-.title {
-  font-size: 5em;
-  font-weight: bolder;
-  color: rgba(255, 255, 255, 0.7);
-  margin: 1rem 0 1rem;
+a {
+  text-decoration: none;
+  color: var(--main-background);
 }
 
-.caption {
-  font-size: 1.75rem;
-  color: rgba(255, 255, 255, 0.7);
-  margin: 1rem 0 1rem;
-}
-
-.content {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: inherit;
-  width: 100%;
-  box-shadow: 0 0 10px black;
-}
-
-.paper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-sizing: border-box;
-  margin: 3rem;
-  padding: 1rem;
-  border-radius: 10px;
-  background-color: white;
-  box-shadow: 0 0 15px darkgray;
-}
-
-.message {
-  margin: 0;
+header {
   text-align: center;
+  color: var(--main-background);
+}
+
+header img {
+  max-height: 6rem;
+  margin: 1rem 0 0;
+}
+
+main {
+  background-color: var(--main-background);
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  color: var(--main-font-color);
+  text-align: center;
+  padding: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  flex-grow: 1;
+}
+
+main h2 {
+  font-family: monospace;
+}
+
+footer {
+  margin: 1rem 0;
+  color: var(--main-background);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+footer img {
+  height: 4rem;
+  margin: 0 1rem;
 }
