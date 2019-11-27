@@ -1,6 +1,6 @@
 import './style.scss'; 
 import 'regenerator-runtime';
 
-// import './exercises';
-// import './challenges';
-import './extras';
+// import './js/exercises';
+// import './js/challenges';
+import './js/extras';
