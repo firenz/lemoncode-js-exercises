@@ -1,3 +1,8 @@
+import { timeout, async } from "q";
+import { finished } from "stream";
+import { writer } from "repl";
+import { resolve } from "dns";
+
 // --- CHALLENGE ------------------------------------------------------------------------
 
 // Vamos a crear... ¡un transmisor Morse!
@@ -42,10 +47,8 @@
 // - La separación entre letras es de 3 puntos.
 // - La separación entre palabras es de 7 puntos.
 
-
 // Más info sobre el código Morse:
 // https://en.wikipedia.org/wiki/Morse_code
-
 
 // Objeto auxiliar:
 const morseAlphabet = {
@@ -59,32 +62,32 @@ const morseAlphabet = {
   "7": "--...",
   "8": "---..",
   "9": "----.",
-  "a": ".-",
-  "b": "-...",
-  "c": "-.-.",
-  "d": "-..",
-  "e": ".",
-  "f": "..-.",
-  "g": "--.",
-  "h": "....",
-  "i": "..",
-  "j": ".---",
-  "k": "-.-",
-  "l": ".-..",
-  "m": "--",
-  "n": "-.",
-  "o": "---",
-  "p": ".--.",
-  "q": "--.-",
-  "r": ".-.",
-  "s": "...",
-  "t": "-",
-  "u": "..-",
-  "v": "...-",
-  "w": ".--",
-  "x": "-..-",
-  "y": "-.--",
-  "z": "--..",
+  a: ".-",
+  b: "-...",
+  c: "-.-.",
+  d: "-..",
+  e: ".",
+  f: "..-.",
+  g: "--.",
+  h: "....",
+  i: "..",
+  j: ".---",
+  k: "-.-",
+  l: ".-..",
+  m: "--",
+  n: "-.",
+  o: "---",
+  p: ".--.",
+  q: "--.-",
+  r: ".-.",
+  s: "...",
+  t: "-",
+  u: "..-",
+  v: "...-",
+  w: ".--",
+  x: "-..-",
+  y: "-.--",
+  z: "--..",
   ".": ".-.-.-",
   ",": "--..--",
   "?": "..--..",
@@ -94,28 +97,84 @@ const morseAlphabet = {
   "@": ".--.-.",
   "(": "-.--.",
   ")": "-.--.-"
+};
+
+interface MorseAlphabet {
+  [key: string]: string;
 }
 
-// class MorseTransmitterFactory {
-//   words: string[] = [];
-//   baseTimeOut: number = 500;
-//   morseAlphabet: object;
-  
-//   constructor(morseAlphabet: object, baseTimeOut: number = 500) {
-//     this.words = [];
-//     this.morseAlphabet = morseAlphabet;
-//     this.baseTimeOut = baseTimeOut;
-//   }
+interface MorseTransmitter {
+  morseAlphabet: MorseAlphabet;
+  baseWaitingTime: number;
 
-//   translate(textToMorse: string): void {
-//     textToMorse.split('').forEach((letter) => { this.words.push(morseAlphabet[letter]); console.log(`${letter}: ${morseAlphabet[letter]}`); });
-//   }
+  blink(isOn: boolean, timePoint: number): Promise<any>;
+  startTransmission(message: string): void;
+  endTransmission(): void;
+  charToMorse(char: string): string;
+  wordToMorse(word: string): string;
+}
 
-//   set BaseTimeOut(baseTimeOut: number) {
-//     this.baseTimeOut = baseTimeOut;
-//   }
+const baseWaitingTime: number = 1000;
 
-//   write(): void {
+const blink = (isOn: boolean, timePoint: number) => {
+  return new Promise((resolve) => {
+    let timeStamp: Date = new Date();
+    console.log(`[${timeStamp.toLocaleTimeString()}] ${(isOn) ? 'ON' : 'OFF'}`);
+    setTimeout(resolve, timePoint * baseWaitingTime);
+  });
+};
 
-//   }
-// }
+const charToMorse = (char: string, morseAlphabet: MorseAlphabet): string => {
+  return morseAlphabet[char].split('').join(' ');
+};
+
+const wordToMorse = (word: string, morseAlphabet: MorseAlphabet): string => {
+  return word.slice().split('')
+  .map(element => element = charToMorse(element, morseAlphabet))
+  .join('%');
+}
+
+const startTransmission = async (message: string) => {
+  const messageInMorse: string = message.slice().toLowerCase().split(' ')
+  .map(element => element = wordToMorse(element, morseAlphabet))
+  .join('#').concat('$');
+
+  console.log(`## EXTRAS - EXTRA - Morse Code ##
+Original message: ${message}
+--- TRANSMISSION START ---`);
+
+  let transmission: (() => Promise<any>)[] = [];
+  messageInMorse.slice().split('').forEach(element => {
+    switch(element) {
+      case ' ': 
+        transmission.push(async () => await blink(false, 1));
+        break;
+      case '.': 
+        transmission.push(async () => await blink(true, 1));
+        break;
+      case '-': 
+        transmission.push(async () => await blink(true, 3));
+        break;
+      case '%': 
+        transmission.push(async () => await blink(false, 3));
+        break;
+      case '#': 
+        transmission.push(async () => await blink(false, 7));
+        break;
+      case '$': 
+        endTransmission();
+        break;
+    }
+  });
+
+  for(let i = 0; i < transmission.length; i++) {
+    await transmission[i]();
+  }
+};
+
+const endTransmission = () => {
+  console.log(`--- END OF TRANSMISSION ---`);
+};
+
+startTransmission('Hola mundo!');
+
