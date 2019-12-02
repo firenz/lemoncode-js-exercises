@@ -1,8 +1,3 @@
-import { timeout, async } from "q";
-import { finished } from "stream";
-import { writer } from "repl";
-import { resolve } from "dns";
-
 // --- CHALLENGE ------------------------------------------------------------------------
 
 // Vamos a crear... ¡un transmisor Morse!
