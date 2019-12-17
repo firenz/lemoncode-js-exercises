@@ -29,4 +29,4 @@ import '../js-extras/01_beyond-es6/swap';
 // Extra
 import '../js-extras/02_extra/calificationsSummary';
 import '../js-extras/02_extra/currySetter';
-// import './js-extras/02_extra/morse'; // TODO
+// import './js-extras/02_extra/morse'; // ejercicio de código asíncrono
