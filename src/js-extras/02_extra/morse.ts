@@ -98,78 +98,169 @@ interface MorseAlphabet {
   [key: string]: string;
 }
 
+type StartTransmissionFunction = (
+  message: string,
+  morseAlphabet: MorseAlphabet
+) => Promise<any>;
+type EndTrasmissionFunction = () => any;
+type WriterFunction = (isOn: boolean) => void;
+type DelayFunction = (
+  callback: (...args: any[]) => void,
+  timePoint: number
+) => NodeJS.Timeout;
+type Transmission = (() => Promise<any>)[];
+
 interface MorseTransmitter {
   morseAlphabet: MorseAlphabet;
-  baseWaitingTime: number;
-
-  blink(isOn: boolean, timePoint: number): Promise<any>;
-  startTransmission(message: string): void;
-  endTransmission(): void;
-  charToMorse(char: string): string;
-  wordToMorse(word: string): string;
+  startTransmission: StartTransmissionFunction;
 }
 
-const baseWaitingTime: number = 1000;
-
-const blink = (isOn: boolean, timePoint: number) => {
-  return new Promise((resolve) => {
-    let timeStamp: Date = new Date();
-    console.log(`[${timeStamp.toLocaleTimeString()}] ${(isOn) ? 'ON' : 'OFF'}`);
-    setTimeout(resolve, timePoint * baseWaitingTime);
-  });
-};
-
-const charToMorse = (char: string, morseAlphabet: MorseAlphabet): string => {
-  return morseAlphabet[char].split('').join(' ');
-};
-
-const wordToMorse = (word: string, morseAlphabet: MorseAlphabet): string => {
-  return word.slice().split('')
-  .map(element => element = charToMorse(element, morseAlphabet))
-  .join('%');
-}
-
-const startTransmission = async (message: string) => {
-  const messageInMorse: string = message.slice().toLowerCase().split(' ')
-  .map(element => element = wordToMorse(element, morseAlphabet))
-  .join('#').concat('$');
-
-  console.log(`## EXTRAS - EXTRA - Morse Code ##
-Original message: ${message}
---- TRANSMISSION START ---`);
-
-  let transmission: (() => Promise<any>)[] = [];
-  messageInMorse.slice().split('').forEach(element => {
-    switch(element) {
-      case ' ': 
-        transmission.push(async () => await blink(false, 1));
-        break;
-      case '.': 
-        transmission.push(async () => await blink(true, 1));
-        break;
-      case '-': 
-        transmission.push(async () => await blink(true, 3));
-        break;
-      case '%': 
-        transmission.push(async () => await blink(false, 3));
-        break;
-      case '#': 
-        transmission.push(async () => await blink(false, 7));
-        break;
-      case '$': 
-        endTransmission();
-        break;
-    }
-  });
-
-  for(let i = 0; i < transmission.length; i++) {
-    await transmission[i]();
-  }
-};
-
-const endTransmission = () => {
+const endTransmission = (): void => {
   console.log(`--- END OF TRANSMISSION ---`);
 };
 
-startTransmission('Hola mundo!');
+const writer = (isOn: boolean): any => {
+  let timeStamp: Date = new Date();
+  console.log(`[${timeStamp.toLocaleTimeString()}] ${isOn ? "ON" : "OFF"}`);
+};
 
+const delay = (
+  callback: (...args: any[]) => void,
+  timePoint: number
+): NodeJS.Timeout => {
+  const baseWaitingTime: number = 1000;
+  return setTimeout(callback, timePoint * baseWaitingTime);
+};
+
+const morseTransmitterFactory = (
+  morseAlphabet: MorseAlphabet,
+  writer: WriterFunction,
+  delay: DelayFunction,
+  endTransmission: EndTrasmissionFunction
+) => {
+
+  const generateTransmission = (
+    convertedMessage: string,
+    writer: WriterFunction,
+    delay: DelayFunction,
+    endTransmission: EndTrasmissionFunction
+  ): (() => Promise<any>)[] => {
+    let transmission: Transmission = [];
+    convertedMessage
+      .slice()
+      .split("")
+      .forEach(element => {
+        switch (element) {
+          case " ":
+            transmission.push(
+              () => 
+              new Promise(resolve => {
+                writer(false);
+                delay(resolve, 1);
+              })
+            );
+            break;
+          case ".":
+            transmission.push(
+              () => 
+              new Promise(resolve => {
+                writer(true);
+                delay(resolve, 1);
+              })
+            );
+            break;
+          case "-":
+            transmission.push(
+              () => 
+              new Promise(resolve => {
+                writer(true);
+                delay(resolve, 3);
+              })
+            );
+            break;
+          case "%":
+            transmission.push(
+              () => 
+              new Promise(resolve => {
+                writer(false);
+                delay(resolve, 3);
+              })
+            );
+            break;
+          case "#":
+            transmission.push(
+              () => 
+              new Promise(resolve => {
+                writer(false);
+                delay(resolve, 7);
+              })
+            );
+            break;
+          case "$":
+            transmission.push(
+              () => 
+              new Promise(resolve => {
+                writer(false);
+                resolve(endTransmission());
+              })
+            );
+            break;
+        }
+      });
+
+    return transmission;
+  };
+
+  const convertMessage = (
+    originalMessage: string,
+    morseAlphabet: MorseAlphabet
+  ): string => {
+    return originalMessage
+      .slice()
+      .toLowerCase()
+      .split(" ")
+      .map(element => (element = wordToMorse(element, morseAlphabet)))
+      .join("#")
+      .concat("$");
+  };
+
+  const charToMorse = (char: string, morseAlphabet: MorseAlphabet): string => {
+    return morseAlphabet[char].split("").join(" ");
+  };
+
+  const wordToMorse = (word: string, morseAlphabet: MorseAlphabet): string => {
+    return word
+      .slice()
+      .split("")
+      .map(element => (element = charToMorse(element, morseAlphabet)))
+      .join("%");
+  };
+
+  const morseTransmitter = {
+    morseAlphabet,
+    startTransmission: async (message: string): Promise<any> => {
+      const convertedMessage: string = convertMessage(message, morseAlphabet);
+
+      console.log(`## EXTRAS - EXTRA - Morse Code ##
+      Original message: ${message}
+      --- TRANSMISSION START ---`);
+
+      let transmission: Transmission = generateTransmission(convertedMessage, writer, delay, endTransmission);
+
+      for (let i = 0; i < transmission.length; i++) {
+        await transmission[i]();
+      }
+    }
+  };
+
+  return morseTransmitter;
+};
+
+const morseTransmitter = morseTransmitterFactory(
+  morseAlphabet,
+  writer,
+  delay,
+  endTransmission
+);
+
+morseTransmitter.startTransmission("Hello world!");
